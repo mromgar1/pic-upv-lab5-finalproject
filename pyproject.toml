@@ -1,0 +1,11 @@
+[project]
+name = "upv-chair-lab4RR"
+version = "0.1.0"
+description = "CIFOIN Laboratory 1 - Waveguides"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "gdsfactory==9.34.0",
+    "gplugins[sax,tidy3d]==2.0.1",
+    "pytz",
+]
