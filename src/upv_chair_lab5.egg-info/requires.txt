@@ -1,5 +1,0 @@
-cspdk>=1.4.2
-gdsfactory==9.34.0
-gplugins[femwell,sax,tidy3d]==2.0.1
-pytz
-scikit-fem
