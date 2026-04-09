@@ -18,7 +18,7 @@ class MMI_EME:
         wvl=1.55,
         mat_core=mat.sin(1.55),
         mat_cladd=mat.sio2(1.55),
-        mat_shallow=0,
+        mat_shallow=mat.sio2(1.55), #así está en 0
         sh_width = 0, 
         sh_thickness = 0, 
         polarization="TE",
