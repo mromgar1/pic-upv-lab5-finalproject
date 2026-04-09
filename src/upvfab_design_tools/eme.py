@@ -26,6 +26,7 @@ class MMI_EME:
         power_IN=(1, 0),
         wg_width=1.0,
         wg_num_modes=2,
+        wg_thickness = 0.22,
         MMI_width=6.0,
         MMI_num_modes=20,
         dz=0.05,
@@ -103,6 +104,8 @@ class MMI_EME:
 
         self.MMI_modes, self.MMI_basis = waveguide(
             wg_width=self.MMI_width,
+            wg_thickness=self.wg_thickness,
+            mat_core=self.mat_core,
             wvl=self.wvl,
             num_modes=self.MMI_num_modes,
             XY=self.XY,
