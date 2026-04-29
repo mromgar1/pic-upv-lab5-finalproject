@@ -142,6 +142,7 @@ def spiral_racetrack_heater(
         waveguide_cross_section=cross_section,
         via_stack="via_stack_heater_mtop",
     )
+from functools import partial
 
 @gf.cell
 def spiral_upv(
