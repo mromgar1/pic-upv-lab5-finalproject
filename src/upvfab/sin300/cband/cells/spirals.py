@@ -231,6 +231,7 @@ def spiral_upv(
  
     spr_length = P.length()
     c.info["length"] = float(gf.snap.snap_to_grid(spr_length))
+    c.info["lx_final"] = float(lx)
  
     return c
 
