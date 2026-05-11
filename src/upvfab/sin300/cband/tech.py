@@ -130,11 +130,11 @@ LAYER_VIEWS = gf.technology.LayerViews(PATH.lyp_yaml)
 class Tech:
     """Technology parameters."""
 
-    radius = 100
-    radius_strip = 100
-    radius_rib = 150
+    radius = 10
+    radius_strip = 10
+    radius_rib = 15
     radius_ro = 25
-    width = 1.0
+    width = 0.45
     width_rib = 1.0
     width_ro = 0.5
 
@@ -186,7 +186,7 @@ def strip(
     width: float = TECH.width,
     layer: LayerSpec = "WG",
     radius: float = TECH.radius,
-    radius_min: float = 35, # TBD: Define minimum radius in the PDK
+    radius_min: float = 5, # TBD: Define minimum radius in the PDK
 ) -> CrossSection:
     """Return Strip cross_section."""
     return gf.cross_section.cross_section(
@@ -202,7 +202,7 @@ def rib(
     width: float = TECH.width_rib,
     layer: LayerSpec = "WG",
     radius: float = TECH.radius_rib,
-    radius_min: float = 35, # TBD: Define minimum radius in the PDK
+    radius_min: float = 5, # TBD: Define minimum radius in the PDK
     #bbox_layers: LayerSpecs = ("SLAB",),
     #bbox_offsets: Floats = (TECH.width_slab,),
     cladding_layers: LayerSpecs = ("SLAB",),

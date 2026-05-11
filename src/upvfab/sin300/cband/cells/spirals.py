@@ -227,6 +227,8 @@ def spiral_upv(
         # p1=(0, 1), p2=(0, 0))
  
     # Extrude
+    PDK = gf.get_active_pdk()
+    PDK.activate()
     c = gf.path.extrude(P, cross_section=layer)
  
     spr_length = P.length()
