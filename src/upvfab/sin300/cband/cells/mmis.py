@@ -7,6 +7,9 @@ from gdsfactory.typings import (
     CrossSectionSpec,
 )
 
+from gdsfactory.component import Component
+from gdsfactory.typings import CrossSectionSpec, ComponentSpec
+
 ################
 # MMIs
 ################
