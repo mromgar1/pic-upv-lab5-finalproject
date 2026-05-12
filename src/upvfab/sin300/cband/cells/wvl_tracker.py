@@ -322,7 +322,9 @@ def bend_s(
         width=width,
     )
 
-
+#########################################################################################
+#CIRCUITO PRINCIPAL
+#########################################################################################
 
 
 # N espiral TIENE QUE SER PAR
@@ -396,3 +398,84 @@ def wvl_tracker(length_spiral: float = 2152.431640625, length_mmi_2x2: float = 2
 
 
     return c 
+
+#########################################################################################
+#ESTRUCTURAS TEST
+#########################################################################################
+
+@gf.cell
+def mmi_2x2_test(length_mmi_2x2: float = 262.9723, taper_width_mmi_2x2: float = 2.8, gap_mmi_2x2: float = 0.5,  taper_length = 10):
+    c = gf.Component()
+
+    mmi_95 = c << mmi2x2(0.45, taper_width_mmi_2x2, taper_length, length_mmi_2x2, 10, gap_mmi_2x2)
+    b1 = c << bend_s(size = [10, 15], cross_section = "strip", width = 0.45, allow_min_radius_violation = True)
+    b2 = c << bend_s(size = [10, 15], cross_section = "strip", width = 0.45, allow_min_radius_violation = True)
+    b1.mirror_x()
+    mmi_95.dmovex(b1.ports["o2"].dx - length_mmi_2x2 - taper_length).dmovey(b1.ports["o2"].dy + taper_width_mmi_2x2/2  + gap_mmi_2x2/2) 
+    b2.dmovex(mmi_95.ports["o3"].dx).dmovey(mmi_95.ports["o3"].dy)
+
+    b3 = c << bend_s(size = [10, 15], cross_section = "strip", width = 0.45, allow_min_radius_violation = True)
+    b4 = c << bend_s(size = [10, 15], cross_section = "strip", width = 0.45, allow_min_radius_violation = True)
+    b3.mirror_x()
+    b3.mirror_y()
+    b3.dmovex(mmi_95.ports["o1"].dx).dmovey(mmi_95.ports["o1"].dy)
+    b4.mirror_x()
+    b4.dmovex(mmi_95.ports["o2"].dx).dmovey(mmi_95.ports["o2"].dy)
+
+    c.add_port(name = "o1", port = b4.ports["o2"], port_type = "optical")
+    c.add_port(name = "o2", port = b3.ports["o2"], port_type = "optical")
+    c.add_port(name = "o3", port = b2.ports["o2"], port_type = "optical")
+    c.add_port(name = "o4", port = b1.ports["o1"], port_type = "optical")
+
+    return c
+
+@gf.cell
+def mmi_3x3_test(length_mmi_3x3: float =  242.4723, taper_width_mmi_3x3: float = 2.8, gap_mmi_3x3: float = 0.2, taper_length: float = 10, altura_bends: float = 13.649999999999999 ): #altura bends heredado de cto: h_bends_33
+
+    c = gf.Component()
+
+    mmi_33 = c << mmi3x3(width= 0.45, width_taper=taper_width_mmi_3x3, length_taper= taper_length, length_mmi = length_mmi_3x3, width_mmi= 10, gap_mmi = gap_mmi_3x3)
+    b1 = c << bend_s(size = [10, altura_bends], cross_section = "strip", width = 0.45, allow_min_radius_violation = True)
+    b2 = c << bend_s(size = [10, altura_bends], cross_section = "strip", width = 0.45, allow_min_radius_violation = True)
+    b3 = c << bend_s(size = [10, altura_bends], cross_section = "strip", width = 0.45, allow_min_radius_violation = True)
+    b4 = c << bend_s(size = [10, altura_bends], cross_section = "strip", width = 0.45, allow_min_radius_violation = True)
+    wvg = c << gf.components.straight(10, cross_section = "strip")
+    
+    b1.mirror_x()
+    b1.mirror_y()
+    b1.dmovex(mmi_33.ports["o1"].dx).dmovey(mmi_33.ports["o1"].dy)
+    b2.mirror_x()
+    b2.dmovex(mmi_33.ports["o3"].dx).dmovey(mmi_33.ports["o3"].dy)
+    b3.mirror_y()
+    b4.dmovex(mmi_33.ports["o4"].dx).dmovey(mmi_33.ports["o4"].dy)
+    b3.dmovex(mmi_33.ports["o6"].dx).dmovey(mmi_33.ports["o6"].dy)
+    wvg.dmovex(mmi_33.ports["o5"].dx).dmovey(mmi_33.ports["o5"].dy)
+
+    c.add_port(name = "o1", port = b2.ports["o2"], port_type = "optical")
+    c.add_port(name = "o2", port = b1.ports["o2"], port_type = "optical")
+    c.add_port(name = "o3", port = b4.ports["o2"], port_type = "optical")
+    c.add_port(name = "o4", port = wvg.ports["o2"], port_type = "optical")
+    c.add_port(name = "o5", port = b3.ports["o2"], port_type = "optical")
+
+    return c
+
+@gf.cell
+def spiral_delays_test(length_spiral: float = 2152.431640625 ):
+    c = gf.Component()
+    spiral = c << spiral_upv(radius = 10, N_spr = 10 , d_SPR =10 , dx_SPR= length_spiral, dy_SPR = 10, layer = "strip") # N must BE EVEN 
+    h = spiral.ports["o2"].dx - spiral.ports["o1"].dx
+    f_bend_euler180 = partial(bend_euler,angle=180)
+    delay_1 = c << gf.components.delay_snake(length=h/2, length0=0, length2=0, n=2, bend180=f_bend_euler180(), cross_section='strip', width = 0.45)
+    delay_2 = c << gf.components.delay_snake(length=h/2, length0=0, length2=0, n=2, bend180=f_bend_euler180(), cross_section='strip', width = 0.45)
+    delay_1.mirror_x().mirror_y()
+    delay_1.dmovex(spiral.ports["o1"].dx ).dmovey(spiral.ports["o1"].dy) 
+    delay_2.mirror_y()
+    delay_2.dmovex(spiral.ports["o2"].dx ).dmovey(spiral.ports["o2"].dy )
+
+    c.add_port(name = "o1", port = delay_1.ports["o2"], port_type = "optical")
+    c.add_port(name = "o2", port = delay_2.ports["o2"], port_type = "optical")
+
+    return c
+
+
+
