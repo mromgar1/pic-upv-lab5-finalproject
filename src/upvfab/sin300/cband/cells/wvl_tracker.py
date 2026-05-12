@@ -244,6 +244,7 @@ def spiral_upv(
 from scipy.optimize import minimize
 import numpy as np
  
+
 def define_spiral_length(delay_length=10000,
                          N_spr=7,
                          radius=100,
