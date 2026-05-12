@@ -365,6 +365,7 @@ def wvl_tracker(length_spiral: float = 2152.431640625, length_mmi_2x2: float = 2
 
     wvg_up.dmovex(b2.ports["o2"].dx).dmovey(b2.ports["o2"].dy)
 
+    #bends entrada y salida cto
     b5 = c <<bend_s(size = [10, 15], cross_section = "strip", width = 0.45, allow_min_radius_violation = True)
     b6 = c << bend_s(size = [10, 15], cross_section = "strip", width = 0.45, allow_min_radius_violation = True)
     b5.mirror_x()
@@ -372,13 +373,21 @@ def wvl_tracker(length_spiral: float = 2152.431640625, length_mmi_2x2: float = 2
     b5.dmovex(mmi_95.ports["o1"].dx).dmovey(mmi_95.ports["o1"].dy)
     b6.mirror_x()
     b6.dmovex(mmi_95.ports["o2"].dx).dmovey(mmi_95.ports["o2"].dy)
+    b7 = c << bend_s(size = [10, h_bends_33], cross_section = "strip", width = 0.45, allow_min_radius_violation = True)
+    b8 = c << bend_s(size = [10, h_bends_33], cross_section = "strip", width = 0.45, allow_min_radius_violation = True)
+    wvg = c << gf.components.straight(10, cross_section = "strip")
+    b7.mirror_y()
+    b8.dmovex(mmi_33.ports["o4"].dx).dmovey(mmi_33.ports["o4"].dy)
+    b7.dmovex(mmi_33.ports["o6"].dx).dmovey(mmi_33.ports["o6"].dy)
+    wvg.dmovex(mmi_33.ports["o5"].dx).dmovey(mmi_33.ports["o5"].dy)
+
 
 
     c.add_port(name = "o1", port = b6.ports["o2"], port_type= "optical")
     c.add_port(name = "o2", port = b5.ports["o2"], port_type= "optical")
-    c.add_port(name = "o3", port = mmi_33.ports["o4"], port_type= "optical")
-    c.add_port(name = "o4", port = mmi_33.ports["o5"], port_type= "optical")
-    c.add_port(name = "o5", port = mmi_33.ports["o6"], port_type= "optical")
+    c.add_port(name = "o3", port = b8.ports["o2"], port_type= "optical")
+    c.add_port(name = "o4", port = wvg.ports["o2"], port_type= "optical")
+    c.add_port(name = "o5", port = b7.ports["o2"], port_type= "optical")
 
 
     c.info["total_length_device"] = 2*taper_length + length_mmi_2x2 + 2*10 + h  + 2*taper_length + length_mmi_3x3 #2*10 es de los sbends
