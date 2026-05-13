@@ -444,6 +444,10 @@ def mmi_2x2_test(length_mmi_2x2: float = 262.9723, taper_width_mmi_2x2: float = 
     c.add_port(name = "o3", port = b2.ports["o2"], port_type = "optical")
     c.add_port(name = "o4", port = b1.ports["o1"], port_type = "optical")
 
+    #normalizar posición para que quede en (0,0)
+    x0, y0 = c.ports["o1"].dcenter
+    c.dmove((-x0, -y0))
+
     return c
 
 @gf.cell
@@ -473,6 +477,10 @@ def mmi_3x3_test(length_mmi_3x3: float =  242.4723, taper_width_mmi_3x3: float =
     c.add_port(name = "o3", port = b4.ports["o2"], port_type = "optical")
     c.add_port(name = "o4", port = wvg.ports["o2"], port_type = "optical")
     c.add_port(name = "o5", port = b3.ports["o2"], port_type = "optical")
+    
+    #normalizar posición para que quede en (0,0)
+    x0, y0 = c.ports["o1"].dcenter
+    c.dmove((-x0, -y0))
 
     return c
 
