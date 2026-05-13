@@ -409,8 +409,8 @@ def wvl_tracker(length_spiral: float = 2152.431640625, length_mmi_2x2: float = 2
     c.info["length_short_arm"] = h + 2*10
     c.info["h_bends_33"] = h_bends_33
 
-    #normalizar para que quede en (0,0)
-    # Normaliza el componente para que el puerto o1 quede en (0, 0)
+    #normalizar posición para que quede en (0,0)
+    
     x0, y0 = c.ports["o1"].dcenter
     c.dmove((-x0, -y0))
 
@@ -491,6 +491,10 @@ def spiral_delays_test(length_spiral: float = 2152.431640625 ):
 
     c.add_port(name = "o1", port = delay_1.ports["o2"], port_type = "optical")
     c.add_port(name = "o2", port = delay_2.ports["o2"], port_type = "optical")
+
+    #normalizar posición para que quede en (0,0)
+    x0, y0 = c.ports["o1"].dcenter
+    c.dmove((-x0, -y0))
 
     return c
 
