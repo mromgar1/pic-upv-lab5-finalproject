@@ -331,6 +331,7 @@ def die(dieL = 5000, dieW = 5000, border = 250, layer_box = "FLOORPLAN"):
     box = gf.boolean(A=obox, B=ibox, operation="A-B", layer=layer_box)
     # Adding ports to a component 
     box.add_port(name="block@org", center=[border,border], width=1, orientation=0, layer=layer_box)
+    box.add_port(name = "base", center = [dieW/2, border], width=1, orientation=0, layer=layer_box )
     box.draw_ports()
     return box
 
